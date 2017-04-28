@@ -1,64 +1,86 @@
 #!/usr/bin/env perl
 use Mojolicious::Lite;
 use DBI;
-#use DATA::DUMPER;
-# $c = DBI->connect("dbi:Pg:dbname=$dbname", "", "");
-
-# our $DB_NAME = "postgres";
-#my $c = DBI->connect("dbi:Pg:dbname=$DB_NAME) or die "$!\n Error: failed to connect to DB.\n";
-# my $sth = $c->prepare("SELECT now();");
-# $sth->execute();
-
-#my $c = DBI->connect('dbi:Pg:dbname=finance;host=db.example.com','user','xyzzy',{AutoCommit=>1,RaiseError=>1,PrintError=>0});
-#print "2+2=",$c->selectrow_array("SELECT 2+2"),"\n";
-
-## Documentation browser under "/perldoc"
-plugin 'PODRenderer';
+use Data::Dumper;
 
 my @entries = ();
 my @names =();
+my @name_field = ();
+my $thread_id = 5;
+my @data=();
+
+# top画面を作成
 get '/' => sub {
-  our $c = shift;
-  my $d = shift;
-
-#  $dbh->do('INSERT INTO test_table(a) VALUES (1)');
-
- 
-#  my $dbh = DBI->connect("dbi:Pg:c=$c", "postgres", "1109yt");
-#  my $sth = $dbh->prepare("SELECT * from pg_tables");      
-#  $sth->execute();
-##while (my $ary_ref = $sth->fetchrow_arrayref) {
-##  my ($row) = @$ary_ref;
-##  print $row , "\n";
-##}
-  
- # $sth = $dbh->prepare('INSERT INTO test_table(a) VALUES (?)');
- # $sth->execute();
-
-#$sth->finish;
-#$dbh->disconnect;
-
+  my $c = shift;
   $c->stash(entries => \@entries); #配列
- # $d->stash(names => \@names);
   $c->render('index');
- # $d->render('index');
+
+my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
+
+
+
+## select でデータを取り出す
+our $sql = $dbh->prepare(
+"
+  select * from thread_table
+"
+);
+$sql->execute();
+
+## fetch をつかってselectで取り出したデータを出力
+while($dbh = $sql->fetchrow_hashref){
+    print $sql;
 };
 
+};
+
+
+# localhost/post を作成
 post '/post' => sub {
   my $c = shift;
-  #my $d = shift;
   my $entry = $c->param('body');
-  #my $name = $d->('name_field');
-  #if 
+  my $data = $c->param('body');
+  my $params = $c->req->params->to_hash;
+  say $c->dumper($params);
+  my $name_field = $c->param('name_field');
+  my $address_field = $c->param('address_field');
+  my $body = $c->param('body');
   unshift @entries, $entry; #配列に格納
-  #unshift @names, $name;
-  ##$c->stash(entry => $entry);
   $c->redirect_to('/');
-  #$d->redirect_to('/');
+
+my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
+my $sth = $dbh->prepare(
+"
+insert into 
+  thread_table (name_field,address_field,body,create_timestamp)
+  values( ?, ?, ?, now())
+"
+);  
+
+$sth->execute($name_field,$address_field,$body);
+
+
+
+## select でデータを取り出す
+my $sql = $dbh->prepare(
+"
+  select * from thread_table
+"
+);
+$sql->execute();
+
+## fetch をつかってselectで取り出したデータを出力
+while($dbh = $sql->fetchrow_hashref){
+    print $sql;
 };
 
+#print Dumper \@data;
+#print Dumper \@entries;
 
-#$dbh->disconnect;
+}; 
+
+
+
 
 app->start;
 __DATA__
@@ -72,20 +94,16 @@ __DATA__
     %= text_field 'name_field' 
     <br>
     %= 'address  :'
-    %= text_field 'body'
+    %= text_field 'address_field'
     <br>    
     %= 'comment:'
     %= text_field 'body'
     %= submit_button '投稿する'
 % end
 % # 配列を用いている　ここをPostgreSQLに保存するように変更する
-% #for my $name (@{$names}) {
-%  #  <p><%= $name %></p>
-% # }
 % for my $entry (@{$entries}) {
-    <p><%= $entry %></p>
+    <p><%= $entry %></p> 
 % }
-
 
 
 @@ post.html.ep
@@ -96,14 +114,24 @@ __DATA__
     %= "name : "
     %= text_field 'name_field' 
     %= 'address  :'
-    %= text_field 'body'
+    %= text_field 'address_field'
     %= 'comment'
     %= text_field 'body'
     %= submit_button '投稿する'  
+
 % end
 <p><%= $entry %></p>
 
+
 @@ layouts/default.html.ep
+<!DOCTYPE html>
+<html>
+  <head><title><%= title %></title></head>
+  <body><%= content %></body>
+</html>
+
+
+@@ not_found.development.html.ep
 <!DOCTYPE html>
 <html>
   <head><title><%= title %></title></head>
