@@ -3,41 +3,36 @@ use Mojolicious::Lite;
 use DBI;
 use Data::Dumper;
 
-#my @entries = ();
-my @names =();
-my @name_field = ();
-my $thread_id = 5;
-my $dbi;
 
 # top画面を作成
 get '/' => sub {
 
-my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
+  my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
   my $comment = shift;
 
 
-
-
 ## select でデータを取り出す
-our $sth = $dbh->prepare(
-"
-  select * from thread_table
-"
-);
+  our $sth = $dbh->prepare(
+  "
+    select * from thread_table
+  "
+  );
 
-$sth->execute;
+  $sth->execute;
 
-my @datas=();
-## fetch をつかってselectで取り出したデータを出力
-while(my $href = $sth->fetchrow_hashref){
-    push @datas,$href;
-};
+  my @datas=();
+
+
+## fetch をつかってselectで取り出したデータを格納
+  while(my $href = $sth->fetchrow_hashref){
+#    if({addres_field}="sage"){
+#    push @datas,$href;
+#    }else{
+    unshift @datas,$href;
+  };
 
   $comment->stash(datas => \@datas); #配列のリファンレンスをテンプレートに渡す
   $comment->render('index');
-
-
-
 };
 
 
@@ -45,43 +40,53 @@ while(my $href = $sth->fetchrow_hashref){
 post '/post' => sub {
   my $comment = shift;
   my $data    = $comment->param('body');
-  
   my $name_field = $comment->param('name_field');
   my $address_field = $comment->param('address_field');
   my $body = $comment->param('body');
- $comment->redirect_to('/');
+  $comment->redirect_to('/');
 
-my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
-my $sth = $dbh->prepare(
-"
-insert into 
-  thread_table (name_field,address_field,body,create_timestamp)
-  values( ?, ?, ?, now())
-"
-);  
+  my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
+  my $sth = $dbh->prepare(
+  "
+    -- case 
+    -- select count(*) from thread_table
+    --  when id <= '10' then
+      
+      insert into
+      thread_table (name_field,address_field,body,create_timestamp)
+      values( ?, ?, ?, now())
+      
+   -- else null end
+  "
+  );  
 
-$sth->execute($name_field,$address_field,$body);
+  $sth->execute($name_field,$address_field,$body);
 
+  $sth = $dbh->prepare(
+  "
+    delete from thread_table where id > 1000 
+  "
+  );  
+  $sth->execute();
 
 
 ## select でデータを取り出す
- $sth = $dbh->prepare(
-"
-  select * from thread_table
-"
-);
-$sth->execute();
+  $sth = $dbh->prepare(
+  "
+    select * from thread_table order by body desc 
+  "
+  );
+  $sth->execute();
+ 
+  my @datas=();
 
-
-my @datas=();
-## fetch をつかってselectで取り出したデータを出力
-while(my $href = $sth->fetchrow_hashref){
+## fetch をつかってselectで取り出したデータを配列に格納
+  
+  while(my $href = $sth->fetchrow_hashref){
     push @datas,$href;
-};
-
+  };
 
 print Dumper \@datas;
-
 }; 
 
 
@@ -91,31 +96,39 @@ __DATA__
 
 @@ index.html.ep
 % layout 'default';
-% title 'Input';  
-  <h1>Chat</h1> 
+% title 'Input';
+  
+%# thread 名とtext_field を作成
+  <h1>First Thread</h1> 
   %= form_for '/post' => method => 'POST' => begin
     %= "name : "
     %= text_field 'name_field' 
     <br>
-    %= 'addr  :'
+    %= 'mail address  :'
     %= text_field 'address_field'
     <br>    
-    %= 'comm:'
+    %= 'text:'
     %= text_field 'body'
     %= submit_button '投稿する'
 % end
-% # 配列を用いている　ここをPostgreSQLに保存するように変更する
- 
+  
+  <Hr>
+
+%# 入力した内容を表示させる 
 % for my $data (@{$datas}) {
-    <p><%= "name:".$data->{name_field} %></p> 
-    <p><%= "addr:".$data->{address_field} %></p> 
-    <p><%= "comm:".$data->{body} %></p> 
+    <nobr><font size="5"><%= $data->{id}%></font></nobr>
+    &nbsp; 
+    <nobr><%="name:".$data->{name_field} %></nobr> 
+    <p><font size = "5"><%= $data->{body} %></font></p> 
+    <p><font size="2"><%= $data->{create_timestamp} %></font></p> 
+    <Hr>
 %}
+
 
 @@ post.html.ep
 % layout 'default';
 % title 'Output';
-  <h1>Chat</h1> 
+  <h1>First Thread</h1> 
     %= form_for '/post' => method => 'POST' => begin
     %= "name : "
     %= text_field 'name_field' 
