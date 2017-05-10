@@ -4,12 +4,17 @@ use DBI;
 use Data::Dumper;
 
 
-# top画面を作成
-get '/' => sub {
+#top画面を作成
+get '/' => sub{
+  my $self = shift;
+  $self->render(template=> 'index');
+};
+
+# thread画面を作成
+get '/thread_page' => sub {
 
   my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
   my $comment = shift;
-
 
 ## select でデータを取り出す
   our $sth = $dbh->prepare(
@@ -32,7 +37,7 @@ get '/' => sub {
   };
 
   $comment->stash(datas => \@datas); #配列のリファンレンスをテンプレートに渡す
-  $comment->render('index');
+  $comment->render('thread_page');
 };
 
 
@@ -43,25 +48,20 @@ post '/post' => sub {
   my $name_field = $comment->param('name_field');
   my $address_field = $comment->param('address_field');
   my $body = $comment->param('body');
-  $comment->redirect_to('/');
+  $comment->redirect_to('/thread_page');
 
   my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
   my $sth = $dbh->prepare(
   "
-    -- case 
-    -- select count(*) from thread_table
-    --  when id <= '10' then
-      
       insert into
       thread_table (name_field,address_field,body,create_timestamp)
       values( ?, ?, ?, now())
-      
-   -- else null end
   "
   );  
 
   $sth->execute($name_field,$address_field,$body);
 
+# Thread数1000以上を削除
   $sth = $dbh->prepare(
   "
     delete from thread_table where id > 1000 
@@ -73,7 +73,7 @@ post '/post' => sub {
 ## select でデータを取り出す
   $sth = $dbh->prepare(
   "
-    select * from thread_table order by body desc 
+    select * from thread_table  
   "
   );
   $sth->execute();
@@ -90,14 +90,22 @@ print Dumper \@datas;
 }; 
 
 
-
 app->start;
 __DATA__
 
 @@ index.html.ep
 % layout 'default';
 % title 'Input';
-  
+<h1><center>Thread List</center></h1>
+<br><a href="/thread_page"><font size="5">First Thread</font></a>  </br>
+  <Hr>
+  <center><%= submit_button 'create Thread' %><center>
+
+
+@@ thread_page.html.ep
+% layout 'default';
+% title 'Input';
+<a href="/">top</a>  
 %# thread 名とtext_field を作成
   <h1>First Thread</h1> 
   %= form_for '/post' => method => 'POST' => begin
@@ -130,13 +138,6 @@ __DATA__
 % title 'Output';
   <h1>First Thread</h1> 
     %= form_for '/post' => method => 'POST' => begin
-    %= "name : "
-    %= text_field 'name_field' 
-    %= 'address  :'
-    %= text_field 'address_field'
-    %= 'comment'
-    %= text_field 'body'
-    %= submit_button '投稿する'  
 % end
 
 @@ layouts/default.html.ep
