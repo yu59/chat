@@ -1,4 +1,6 @@
 #!/usr/bin/env perl
+use strict;
+use warnings;
 use Mojolicious::Lite;
 use DBI;
 use Data::Dumper;
@@ -6,8 +8,74 @@ use Data::Dumper;
 
 #top画面を作成
 get '/' => sub{
-  my $self = shift;
-  $self->render(template=> 'index');
+  my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
+  my $comment = shift;
+
+## select でデータを取り出す
+  our $sth = $dbh->prepare(
+  "
+    select * from thread_list
+  "
+  );  
+  $sth->execute;
+  
+  my @threads=();
+
+## fetch をつかってselectで取り出したデータを格納
+  while(my $href = $sth->fetchrow_hashref){
+    unshift @threads,$href;
+  };
+  $comment->stash(threads => \@threads); #配列のリファンレンスをテンプレートに渡す
+  $comment->render('index');
+};  
+
+
+#topのpostを作成
+post '/post' =>sub{
+  my $comment = shift;
+  my $q = shift;
+  my $thread_field = $comment->param('thread_field');
+  $comment->redirect_to('/');
+
+## 新しいthreadのtableを作成
+  my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
+  my $sth = $dbh->prepare(
+  "
+    create table $thread_field (id serial, name_field text, address_field text, body text, create_timestamp timestamp)
+  "
+  );  
+  #$sth =~ s/'//g;
+  $sth->execute($thread_field);
+
+ 
+## thread_listに作ったthreadをinsert
+  my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
+  my $sth = $dbh->prepare(
+  "
+    insert into
+    thread_list (thread_name, create_timestamp)
+    values(?,now())
+  "
+  );  
+  $sth->execute($thread_field);
+  
+
+
+## select でデータを取り出す
+  $sth = $dbh->prepare(
+  "
+    select * from thread_list
+  "
+  );
+  $sth->execute;
+  
+  my @threads=();
+  
+## fetch をつかってselectで取り出したデータを配列に格納
+  while(my $href = $sth-> fetchrow_hashref){
+    push @threads,$href;
+  };
+  print Dumper @threads;
 };
 
 # thread画面を作成
@@ -41,10 +109,9 @@ get '/thread_page' => sub {
 };
 
 
-# localhost/post を作成
-post '/post' => sub {
+# localhost/thread_post を作成
+post '/thread_post' => sub {
   my $comment = shift;
-  my $data    = $comment->param('body');
   my $name_field = $comment->param('name_field');
   my $address_field = $comment->param('address_field');
   my $body = $comment->param('body');
@@ -97,18 +164,37 @@ __DATA__
 % layout 'default';
 % title 'Input';
 <h1><center>Thread List</center></h1>
-<br><a href="/thread_page"><font size="5">First Thread</font></a>  </br>
+  %= form_for '/post'=>method=>'POST'=>begin 
+<br><a href="/thread_page"><font size="6">First Thread</font></a>  </br>
+  %for my $thread (@{$threads}){
+    <font size="6"><%= $thread->{thread_name}%></font>
+  %}
+
   <Hr>
-  <center><%= submit_button 'create Thread' %><center>
+  <center>
+    %= text_field 'thread_field'
+    %= submit_button 'create Thread' 
+  </center>
+  %end
+  
+
+%#postを作成
+@@ post.html.ep
+% layout 'default';
+% title 'Output';
+    %= form_for '/post' => method => 'POST' => begin
+% end
 
 
 @@ thread_page.html.ep
 % layout 'default';
 % title 'Input';
-<a href="/">top</a>  
+<a href="/"><font size = "5">Thread List</font></a>  
+
+
 %# thread 名とtext_field を作成
   <h1>First Thread</h1> 
-  %= form_for '/post' => method => 'POST' => begin
+  %= form_for '/thread_post' => method => 'POST' => begin
     %= "name : "
     %= text_field 'name_field' 
     <br>
@@ -133,11 +219,12 @@ __DATA__
 %}
 
 
-@@ post.html.ep
+%#thread_postを作成
+@@ thread_post.html.ep
 % layout 'default';
 % title 'Output';
   <h1>First Thread</h1> 
-    %= form_for '/post' => method => 'POST' => begin
+    %= form_for '/thread_post' => method => 'POST' => begin
 % end
 
 @@ layouts/default.html.ep
