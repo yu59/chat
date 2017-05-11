@@ -6,8 +6,31 @@ use DBI;
 use Data::Dumper;
 
 
-#top画面を作成
+
+## thread_listを$threadに格納
+my @threads=();
+my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
+my $comment = shift;
+
+## select でデータを取り出す
+our $sth = $dbh->prepare(
+  "
+    select * from thread_list
+  "
+);  
+$sth->execute;
+  
+## fetch をつかってselectで取り出したデータを格納
+while(my $href = $sth->fetchrow_hashref){
+  unshift @threads,$href;
+};
+my $thread = \@threads;
+print Dumper $thread;
+
+
+##top画面を作成
 get '/' => sub{
+  my @threads=();
   my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
   my $comment = shift;
 
@@ -19,12 +42,11 @@ get '/' => sub{
   );  
   $sth->execute;
   
-  my @threads=();
-
 ## fetch をつかってselectで取り出したデータを格納
   while(my $href = $sth->fetchrow_hashref){
     unshift @threads,$href;
   };
+
   $comment->stash(threads => \@threads); #配列のリファンレンスをテンプレートに渡す
   $comment->render('index');
 };  
@@ -39,18 +61,18 @@ post '/post' =>sub{
 
 ## 新しいthreadのtableを作成
   my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
+  my $table_name_lit = $dbh->quote_identifier($thread_field);
   my $sth = $dbh->prepare(
   "
-    create table $thread_field (id serial, name_field text, address_field text, body text, create_timestamp timestamp)
+    create table $table_name_lit (id serial, name_field text, address_field text, body text, create_timestamp timestamp)
   "
   );  
   #$sth =~ s/'//g;
-  $sth->execute($thread_field);
+  $sth->execute;
 
  
 ## thread_listに作ったthreadをinsert
-  my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
-  my $sth = $dbh->prepare(
+  $sth = $dbh->prepare(
   "
     insert into
     thread_list (thread_name, create_timestamp)
@@ -78,83 +100,79 @@ post '/post' =>sub{
   print Dumper @threads;
 };
 
-# thread画面を作成
-get '/thread_page' => sub {
-
-  my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
-  my $comment = shift;
+## thread画面を作成
+# thread_listを取り出す
 
 ## select でデータを取り出す
-  our $sth = $dbh->prepare(
-  "
-    select * from thread_table
-  "
-  );
+$sth = $dbh->prepare(
+"
+  select * from thread_list
+"
+);
+$sth->execute;
+while(my $href = $sth->fetchrow_hashref){
+  my $name = $href->{thread_name};
+  get "/$name" => sub { 
+    my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
+    my $comment = shift;
 
-  $sth->execute;
+    ## select でデータを取り出す
+    my $sth = $dbh->prepare("select * from $name");
 
-  my @datas=();
+    $sth->execute; 
+    my @datas=();
 
+    ## fetch をつかってselectで取り出したデータを格納
+    while(my $href = $sth->fetchrow_hashref){
+      # if({addres_field}="sage"){
+      # push @datas,$href;
+      # }else{
+      unshift @datas,$href;
+    }
 
-## fetch をつかってselectで取り出したデータを格納
-  while(my $href = $sth->fetchrow_hashref){
-#    if({addres_field}="sage"){
-#    push @datas,$href;
-#    }else{
-    unshift @datas,$href;
+    $comment->stash(datas => \@datas); #配列のリファンレンスをテンプレートに渡す
+    $comment->stash(thread_name => $name);
+    $comment->render('thread_page'); 
+       
   };
-
-  $comment->stash(datas => \@datas); #配列のリファンレンスをテンプレートに渡す
-  $comment->render('thread_page');
-};
-
-
-# localhost/thread_post を作成
-post '/thread_post' => sub {
-  my $comment = shift;
-  my $name_field = $comment->param('name_field');
-  my $address_field = $comment->param('address_field');
-  my $body = $comment->param('body');
-  $comment->redirect_to('/thread_page');
-
-  my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
-  my $sth = $dbh->prepare(
-  "
-      insert into
-      thread_table (name_field,address_field,body,create_timestamp)
-      values( ?, ?, ?, now())
-  "
-  );  
-
-  $sth->execute($name_field,$address_field,$body);
-
-# Thread数1000以上を削除
-  $sth = $dbh->prepare(
-  "
-    delete from thread_table where id > 1000 
-  "
-  );  
-  $sth->execute();
-
-
-## select でデータを取り出す
-  $sth = $dbh->prepare(
-  "
-    select * from thread_table  
-  "
-  );
-  $sth->execute();
- 
-  my @datas=();
-
-## fetch をつかってselectで取り出したデータを配列に格納
   
-  while(my $href = $sth->fetchrow_hashref){
-    push @datas,$href;
+  post "/$name" => sub { 
+    my $comment = shift;
+    my $name_field = $comment->param('name_field');
+    my $address_field = $comment->param('address_field');
+    my $body = $comment->param('body');
+    $comment->redirect_to("/$thread");
+  
+    my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
+    my $sth = $dbh->prepare(<<"SQL");
+insert into
+$name (name_field,address_field,body,create_timestamp)
+values( ?, ?, ?, now())
+SQL
+  
+    $sth->execute($name_field,$address_field,$body);
+  
+    # Thread数1000以上を削除
+    $sth = $dbh->prepare("delete from $name where id > 1000");  
+    $sth->execute();
+    $sth->finish; 
+  
+    ## select でデータを取り出す
+    $sth = $dbh->prepare("select * from $name");
+    $sth->execute();
+   
+    my @datas=();
+  
+  ## fetch をつかってselectで取り出したデータを配列に格納
+    
+    while(my $href = $sth->fetchrow_hashref){
+      push @datas,$href;
+    }
+    print Dumper \@datas;
   };
+}
 
-print Dumper \@datas;
-}; 
+
 
 
 app->start;
@@ -164,13 +182,12 @@ __DATA__
 % layout 'default';
 % title 'Input';
 <h1><center>Thread List</center></h1>
-  %= form_for '/post'=>method=>'POST'=>begin 
-<br><a href="/thread_page"><font size="6">First Thread</font></a>  </br>
   %for my $thread (@{$threads}){
-    <font size="6"><%= $thread->{thread_name}%></font>
+    <br><font size="6"><a href="/<%= $thread->{thread_name}%>"><%= $thread->{thread_name}%></font></br>
   %}
 
   <Hr>
+  %= form_for '/post'=>method=>'POST'=>begin 
   <center>
     %= text_field 'thread_field'
     %= submit_button 'create Thread' 
@@ -193,7 +210,7 @@ __DATA__
 
 
 %# thread 名とtext_field を作成
-  <h1>First Thread</h1> 
+  <h1><%= $thread_name %></h1> 
   %= form_for '/thread_post' => method => 'POST' => begin
     %= "name : "
     %= text_field 'name_field' 
