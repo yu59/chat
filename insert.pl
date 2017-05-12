@@ -7,72 +7,49 @@ use Data::Dumper;
 
 
 
-## thread_listを$threadに格納
-my @threads=();
-my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
-my $comment = shift;
-
-## select でデータを取り出す
-our $sth = $dbh->prepare(
-  "
-    select * from thread_list
-  "
-);  
-$sth->execute;
-  
-## fetch をつかってselectで取り出したデータを格納
-while(my $href = $sth->fetchrow_hashref){
-  unshift @threads,$href;
+get '/error' => sub{
+  my $c = shift;
+  $c->render('error');
 };
-my $thread = \@threads;
-print Dumper $thread;
 
+###################################################
 
 ##top画面を作成
 get '/' => sub{
   my @threads=();
-  my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
+  my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","pass");
   my $comment = shift;
 
 ## select でデータを取り出す
-  our $sth = $dbh->prepare(
+  my $sth = $dbh->prepare(
   "
-    select * from thread_list
+    select * from thread_list order by update_timestamp desc
   "
-  );  
+  );
+
   $sth->execute;
-  
+#  $sth->finish;
 ## fetch をつかってselectで取り出したデータを格納
   while(my $href = $sth->fetchrow_hashref){
-    unshift @threads,$href;
+    push @threads,$href;
   };
 
   $comment->stash(threads => \@threads); #配列のリファンレンスをテンプレートに渡す
   $comment->render('index');
 };  
 
+###################################################
 
 #topのpostを作成
 post '/post' =>sub{
-  my $comment = shift;
+  my $c = shift;
   my $q = shift;
-  my $thread_field = $comment->param('thread_field');
-  $comment->redirect_to('/');
+  my $thread_field = $c->param('thread_field');
 
-## 新しいthreadのtableを作成
-  my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
-  my $table_name_lit = $dbh->quote_identifier($thread_field);
-  my $sth = $dbh->prepare(
-  "
-    create table $table_name_lit (id serial, name_field text, address_field text, body text, create_timestamp timestamp)
-  "
-  );  
-  #$sth =~ s/'//g;
-  $sth->execute;
+  my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","pass");
 
- 
 ## thread_listに作ったthreadをinsert
-  $sth = $dbh->prepare(
+  my $sth = $dbh->prepare(
   "
     insert into
     thread_list (thread_name, create_timestamp)
@@ -80,15 +57,9 @@ post '/post' =>sub{
   "
   );  
   $sth->execute($thread_field);
-  
-
 
 ## select でデータを取り出す
-  $sth = $dbh->prepare(
-  "
-    select * from thread_list
-  "
-  );
+  $sth = $dbh->prepare("select * from thread_list");
   $sth->execute;
   
   my @threads=();
@@ -98,82 +69,89 @@ post '/post' =>sub{
     push @threads,$href;
   };
   print Dumper @threads;
+  $c->redirect_to('/');
 };
 
-## thread画面を作成
-# thread_listを取り出す
+###################################################
 
-## select でデータを取り出す
-$sth = $dbh->prepare(
-"
-  select * from thread_list
-"
-);
-$sth->execute;
-while(my $href = $sth->fetchrow_hashref){
-  my $name = $href->{thread_name};
-  get "/$name" => sub { 
-    my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
-    my $comment = shift;
+get "/:name" => sub { 
+my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","pass");
+  my $c= shift;
+  my $name = $c->param('name');
 
-    ## select でデータを取り出す
-    my $sth = $dbh->prepare("select * from $name");
+  ## select でデータを取り出す
+  my $sth = $dbh->prepare("select * from thread_table where thread_name = ?");
 
-    $sth->execute; 
-    my @datas=();
+  $sth->execute($name); 
+  my @datas=();
 
-    ## fetch をつかってselectで取り出したデータを格納
-    while(my $href = $sth->fetchrow_hashref){
-      # if({addres_field}="sage"){
-      # push @datas,$href;
-      # }else{
-      unshift @datas,$href;
-    }
+  ## fetch をつかってselectで取り出したデータを格納
+  while(my $href = $sth->fetchrow_hashref){
+     push  @datas,$href;
+  }
+print Dumper @datas;
 
-    $comment->stash(datas => \@datas); #配列のリファンレンスをテンプレートに渡す
-    $comment->stash(thread_name => $name);
-    $comment->render('thread_page'); 
-       
-  };
-  
-  post "/$name" => sub { 
-    my $comment = shift;
-    my $name_field = $comment->param('name_field');
-    my $address_field = $comment->param('address_field');
-    my $body = $comment->param('body');
-    $comment->redirect_to("/$thread");
-  
-    my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","1109yt");
-    my $sth = $dbh->prepare(<<"SQL");
+  $c->stash(datas => \@datas); #配列のリファンレンスをテンプレートに渡す
+  $c->stash(thread_name => $name);
+  $c->render('thread_page'); 
+     
+};
+
+###################################################
+
+post "/:name" => sub { 
+  my $c= shift;
+  my $name_field = $c->param('name_field');
+  my $address_field = $c->param('address_field');
+  my $body = $c->param('body');
+  my $thread_name = $c->param('thread_name');
+  my $name = $c->param('name');
+  $c->redirect_to("/$name"); 
+  my @datas;
+  my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","pass");
+
+
+  ## threadのレコード数を調べる
+  my $sth = $dbh->prepare(
+  "
+    select count(thread_name) from thread_table
+    where (thread_name = ?)
+  "
+  );
+  $sth->execute($name);
+
+  while(my $href = $sth->fetchrow_hashref){
+     push  @datas,$href;
+  }
+  my $count = \@datas;
+  print Dumper $count;
+
+  if ($count = 3){
+    ## thread_tableにレコードを追加
+    $sth = $dbh->prepare(<<"SQL");
 insert into
-$name (name_field,address_field,body,create_timestamp)
-values( ?, ?, ?, now())
+thread_table 
+(name_field,address_field,body,create_timestamp,thread_name)
+values(?, ?, ?, now(), ?)
 SQL
-  
-    $sth->execute($name_field,$address_field,$body);
-  
-    # Thread数1000以上を削除
-    $sth = $dbh->prepare("delete from $name where id > 1000");  
-    $sth->execute();
-    $sth->finish; 
-  
-    ## select でデータを取り出す
-    $sth = $dbh->prepare("select * from $name");
-    $sth->execute();
-   
-    my @datas=();
-  
-  ## fetch をつかってselectで取り出したデータを配列に格納
-    
-    while(my $href = $sth->fetchrow_hashref){
-      push @datas,$href;
-    }
-    print Dumper \@datas;
-  };
-}
+
+    $sth->execute($name_field,$address_field,$body,$name);
+
+    $sth = $dbh->prepare(
+    "
+      update thread_list set update_timestamp = now() 
+      where thread_name = ?
+    "
+    );
+    $sth->execute($name);
+  }else{
+    $c->redirect_to('/error');
+  }
+};
 
 
 
+###################################################
 
 app->start;
 __DATA__
@@ -182,18 +160,21 @@ __DATA__
 % layout 'default';
 % title 'Input';
 <h1><center>Thread List</center></h1>
-  %for my $thread (@{$threads}){
-    <br><font size="6"><a href="/<%= $thread->{thread_name}%>"><%= $thread->{thread_name}%></font></br>
-  %}
 
-  <Hr>
   %= form_for '/post'=>method=>'POST'=>begin 
   <center>
     %= text_field 'thread_field'
     %= submit_button 'create Thread' 
   </center>
   %end
+
+  <Hr>
+  %for my $thread (@{$threads}){
+    <br><font size="6"><a href="/<%= $thread->{thread_name}%>"><%= $thread->{thread_name}%></font></br>
+  %}
+  <Hr>
   
+%###################################################
 
 %#postを作成
 @@ post.html.ep
@@ -202,6 +183,7 @@ __DATA__
     %= form_for '/post' => method => 'POST' => begin
 % end
 
+%###################################################
 
 @@ thread_page.html.ep
 % layout 'default';
@@ -211,7 +193,7 @@ __DATA__
 
 %# thread 名とtext_field を作成
   <h1><%= $thread_name %></h1> 
-  %= form_for '/thread_post' => method => 'POST' => begin
+  %= form_for "/$thread_name" => method => 'POST' => begin
     %= "name : "
     %= text_field 'name_field' 
     <br>
@@ -226,15 +208,19 @@ __DATA__
   <Hr>
 
 %# 入力した内容を表示させる 
+% my $count;
 % for my $data (@{$datas}) {
-    <nobr><font size="5"><%= $data->{id}%></font></nobr>
-    &nbsp; 
-    <nobr><%="name:".$data->{name_field} %></nobr> 
-    <p><font size = "5"><%= $data->{body} %></font></p> 
-    <p><font size="2"><%= $data->{create_timestamp} %></font></p> 
-    <Hr>
+      % $count ++;
+      <nobr><font size="5"><%= $count %></font></nobr>
+      &nbsp; 
+      <nobr><%="name:".$data->{name_field} %></nobr> 
+      <p><font size = "5"><%= $data->{body} %></font></p> 
+      <p><font size="2"><%= $data->{create_timestamp} %></font></p> 
+      <Hr>
 %}
 
+
+%###################################################
 
 %#thread_postを作成
 @@ thread_post.html.ep
@@ -243,6 +229,13 @@ __DATA__
   <h1>First Thread</h1> 
     %= form_for '/thread_post' => method => 'POST' => begin
 % end
+
+%###################################################
+
+@@ error.html.ep
+% layout 'default';
+% title 'Input';
+  <h1>Records is Full, please create new Thread</h1>
 
 @@ layouts/default.html.ep
 <!DOCTYPE html>
