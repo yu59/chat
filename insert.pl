@@ -106,7 +106,6 @@ post "/:name" => sub {
   my $body = $c->param('body');
   my $thread_name = $c->param('thread_name');
   my $name = $c->param('name');
-  $c->redirect_to("/$name"); 
   my @datas;
   my $dbh = DBI->connect('dbi:Pg:dbname=bbs',"yu","pass");
 
@@ -123,11 +122,17 @@ post "/:name" => sub {
   while(my $href = $sth->fetchrow_hashref){
      push  @datas,$href;
   }
-  my $count = \@datas;
+  my $count = $datas[0]->{count};
   print Dumper $count;
-
-  if ($count = 3){
-    ## thread_tableにレコードを追加
+    
+my $max_count = 1000;
+  if ($count > $max_count) {
+   #$c->redirect_to('/error');
+   $c->stash(max_count => $max_count);
+   $c->render(template => 'error');
+   return;
+  }else{
+     ## thread_tableにレコードを追加
     $sth = $dbh->prepare(<<"SQL");
 insert into
 thread_table 
@@ -137,6 +142,7 @@ SQL
 
     $sth->execute($name_field,$address_field,$body,$name);
 
+    if ($address_field ne "sage"){
     $sth = $dbh->prepare(
     "
       update thread_list set update_timestamp = now() 
@@ -144,8 +150,9 @@ SQL
     "
     );
     $sth->execute($name);
-  }else{
-    $c->redirect_to('/error');
+    }
+    $c->redirect_to("/$name"); 
+ 
   }
 };
 
