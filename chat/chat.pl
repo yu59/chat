@@ -19,7 +19,7 @@ get '/' => sub {
 #-----------------------------------------------------------------------
 
 ## post for login page
-post '/post' => sub {
+post '/' => sub {
   my $dbh = DBI->connect('dbi:Pg:dbname=chat',"yu","pass");
   my $c = shift;
   my $name = $c->param('name');
@@ -31,8 +31,6 @@ post '/post' => sub {
   ");
   $sth->execute($name);
 
-  
-   
   $c->redirect_to('/');
 };
 
@@ -50,7 +48,7 @@ get '/list' => sub {
 #-----------------------------------------------------------------------
 
 ## post for index page
-post '/list_post' => sub {
+post '/list' => sub {
   my $c = shift;
   $c->redirect_to('/list');
 };
@@ -114,19 +112,14 @@ __DATA__
 <h1><center>Login page</center><h1>
 <Hr>
 <center><font size = "3">Please input user ID and icon</font>
-%= form_for "/" => method => 'POST' => begin
+%= form_for "/list" => method => 'POST' => begin
   <font size = "4"><%= 'name:' %>
-  <%= text_field 'name'%>
-  <%= link_to 'Enter' =>'/list' %></font> 
+  %= text_field 'name'
+  %= submit_button 'login'
   </center>
 <Hr>
 % end
 
-%#-----------------------------------------------------------------------
-
-@@ post.html.ep 
-% layout 'default';
-% title 'post to index page';
 
 %#-----------------------------------------------------------------------
 
@@ -139,12 +132,6 @@ Let's choose kind of chat
 <div align = "right"><%= link_to 'return' => '/' %></div>
 <Hr>
 <%= link_to 'First Chat' => '/chat' %>
-
-%#-----------------------------------------------------------------------
-
-@@ list_post.html.ep
-% layout 'default';
-% title 'post to index page';
 
 
 %#-----------------------------------------------------------------------
@@ -173,19 +160,7 @@ Let's choose kind of chat
   <br style="Line-Height:3pt"><div style="border:1px solid #0CF;padding:10px;border-radius:10px;" ><font size="5"><%= $msgs->{msg} %></div>
 % }
 
-%#-----------------------------------------------------------------------
-
-@@ chat_post.html.ep
-% layout 'default';
-% title 'post to chat page';
-
 
 %#-----------------------------------------------------------------------
 
 
-@@ layouts/default.html.ep
-<!DOCTYPE html>
-<html>
-  <head><title><%= title %></title></head>
-  <body><%= content %></body>
-</html>
