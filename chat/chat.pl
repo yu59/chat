@@ -3,9 +3,11 @@ use Mojolicious::Lite;
 use Mojo::Util qw/md5_sum/;
 use Data::Dumper;
 use DBI;
-use File::Basename 'basename';
-use File::Path 'mkpath';
+#use File::Basename 'basename';
+#use File::Path 'mkpath';
+use Mojo::Upload;
 
+## 画像を保存するディレクトリがなければ作る
 my $image_base = '/image';
 my $image_dir = app->home->rel_file('/public') . $image_base;
 unless (-d $image_dir) {
@@ -95,6 +97,12 @@ post '/user' => sub {
 
 #  push @{$c->static->paths}, $c->upload_dir;
 #  my $r = $c->routes;
+
+# https://github.com/yuki-kimoto/mojolicious-guides-japanese/wiki/Mojo::Upload
+#  my $upload = Mojo::Upload->new;
+#  print Dumper $upload->filename;
+#  $upload->move_to("/home/sri/");
+
   
   $c->redirect_to('/');
   
@@ -114,10 +122,6 @@ get '/list' => sub {
     push @list, $href;
   }
   print Dumper @list;
-    
-  
-
-
 
   ## 保存したデータの取得
   my $user = $c->session('name');
@@ -136,16 +140,19 @@ post '/list' => sub {
   my $c = shift;
   my $dbh = DBI->connect('dbi:Pg:dbname=chat',"yu","pass");
   my $room = $c->param('room');
-  my $sth = $dbh->prepare(
-  "
-    insert into list (room, create_timestamp) 
-    values (?, now()) 
-  ");
 
+  if($room ne ''){
+    my $sth = $dbh->prepare(
+    "
+      insert into list (room, create_timestamp) 
+      values (?, now()) 
+    ");
   $sth->execute($room);
+  }else{
+  };
 
-
-  $c->redirect_to('/list');
+    $c->redirect_to('/list');
+  
 };
 
 
@@ -241,7 +248,7 @@ __DATA__
 % title 'create user page';
 
 <h1><center>Create user page</center></h1>
-
+<p align = "right"><%= link_to 'return' => '/' %></p>
 <Hr>
 %= form_for "/user" => method => 'POST' => begin
   <center>
@@ -273,13 +280,6 @@ __DATA__
   <div align = "right">
     <%= link_to 'return' => '/' %>
   </div>
-  <Hr>
-
-% for my $list (@{$list}) {
-  <a href="/<%= $list->{room}%>"><%= $list->{room} %> 
-  <br>
-% }
-<Hr>
 %= form_for "/list" => method => 'POST' => begin
   <center>
     %= 'new room:'
@@ -287,6 +287,13 @@ __DATA__
     %= submit_button 'create'
   </center>
 % end
+  <Hr>
+
+% for my $list (@{$list}) {
+  <a href="/<%= $list->{room}%>"><%= $list->{room} %> 
+  <br>
+% }
+<Hr>
   
 
 %#-----------------------------------------------------------------------
