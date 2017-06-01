@@ -1,0 +1,381 @@
+[Thu Jun  1 17:23:01 2017] [info] Start application
+[Thu Jun  1 17:23:08 2017] [info] Start application
+[Thu Jun  1 17:23:14 2017] [debug] GET "/user"
+[Thu Jun  1 17:23:14 2017] [debug] Routing to a callback
+[Thu Jun  1 17:23:14 2017] [debug] Rendering template "user.html.ep" from DATA section
+[Thu Jun  1 17:23:14 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 17:23:14 2017] [debug] Rendering template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 17:23:14 2017] [debug] 200 OK (0.026996s, 37.043/s)
+[Thu Jun  1 17:23:16 2017] [debug] GET "/"
+[Thu Jun  1 17:23:16 2017] [debug] Routing to a callback
+[Thu Jun  1 17:23:16 2017] [debug] Rendering template "index.html.ep" from DATA section
+[Thu Jun  1 17:23:16 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 17:23:16 2017] [debug] 200 OK (0.002513s, 397.931/s)
+[Thu Jun  1 17:23:20 2017] [debug] POST "/"
+[Thu Jun  1 17:23:20 2017] [debug] Routing to a callback
+[Thu Jun  1 17:23:20 2017] [debug] 302 Found (0.007886s, 126.807/s)
+[Thu Jun  1 17:23:20 2017] [debug] GET "/list"
+[Thu Jun  1 17:23:20 2017] [debug] Routing to a callback
+[Thu Jun  1 17:23:20 2017] [debug] Rendering template "list.html.ep" from DATA section
+[Thu Jun  1 17:23:20 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 17:23:20 2017] [debug] 200 OK (0.007094s, 140.964/s)
+[Thu Jun  1 17:35:06 2017] [info] Start application
+[Thu Jun  1 17:44:08 2017] [info] Start application
+[Thu Jun  1 17:45:54 2017] [debug] GET "/list"
+[Thu Jun  1 17:45:54 2017] [debug] Routing to a callback
+[Thu Jun  1 17:45:54 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 17:45:54 2017] [debug] Rendering template "list.html.ep" from DATA section
+[Thu Jun  1 17:45:54 2017] [debug] Rendering template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 17:45:54 2017] [debug] 200 OK (0.02704s, 36.982/s)
+[Thu Jun  1 17:45:57 2017] [debug] GET "/first_room"
+[Thu Jun  1 17:45:57 2017] [debug] Routing to a callback
+[Thu Jun  1 17:45:57 2017] [debug] Rendering template "chat.html.ep" from DATA section
+[Thu Jun  1 17:45:57 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 17:45:57 2017] [debug] 200 OK (0.011699s, 85.477/s)
+[Thu Jun  1 17:46:01 2017] [debug] GET "/list"
+[Thu Jun  1 17:46:01 2017] [debug] Routing to a callback
+[Thu Jun  1 17:46:01 2017] [debug] Rendering cached template "list.html.ep" from DATA section
+[Thu Jun  1 17:46:01 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 17:46:01 2017] [debug] 200 OK (0.01056s, 94.697/s)
+[Thu Jun  1 17:46:02 2017] [debug] GET "/waiwai"
+[Thu Jun  1 17:46:02 2017] [debug] Routing to a callback
+[Thu Jun  1 17:46:02 2017] [debug] Rendering cached template "chat.html.ep" from DATA section
+[Thu Jun  1 17:46:02 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 17:46:02 2017] [debug] 200 OK (0.010349s, 96.628/s)
+[Thu Jun  1 17:46:04 2017] [debug] GET "/list"
+[Thu Jun  1 17:46:04 2017] [debug] Routing to a callback
+[Thu Jun  1 17:46:04 2017] [debug] Rendering cached template "list.html.ep" from DATA section
+[Thu Jun  1 17:46:04 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 17:46:04 2017] [debug] 200 OK (0.010159s, 98.435/s)
+[Thu Jun  1 17:47:30 2017] [info] Start application
+[Thu Jun  1 17:48:49 2017] [info] Start application
+[Thu Jun  1 17:48:51 2017] [debug] GET "/"
+[Thu Jun  1 17:48:51 2017] [debug] Routing to a callback
+[Thu Jun  1 17:48:51 2017] [debug] Rendering template "index.html.ep" from DATA section
+[Thu Jun  1 17:48:51 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 17:48:51 2017] [debug] Rendering template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 17:48:51 2017] [debug] 200 OK (0.006801s, 147.037/s)
+[Thu Jun  1 17:48:53 2017] [debug] GET "/user"
+[Thu Jun  1 17:48:53 2017] [debug] Routing to a callback
+[Thu Jun  1 17:48:53 2017] [debug] Rendering template "user.html.ep" from DATA section
+[Thu Jun  1 17:48:53 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 17:48:53 2017] [debug] 200 OK (0.023761s, 42.086/s)
+[Thu Jun  1 17:49:02 2017] [debug] POST "/user"
+[Thu Jun  1 17:49:02 2017] [debug] Routing to a callback
+[Thu Jun  1 17:49:02 2017] [error] Can't call method "move_to" on an undefined value at /home/yu/.plenv/versions/5.24.1/lib/perl5/site_perl/5.24.1/Mojo/Upload.pm line 6.
+
+[Thu Jun  1 17:49:02 2017] [debug] Template "exception.development.html.ep" not found
+[Thu Jun  1 17:49:02 2017] [debug] Template "exception.html.ep" not found
+[Thu Jun  1 17:49:02 2017] [debug] Rendering template "mojo/debug.html.ep"
+[Thu Jun  1 17:49:02 2017] [debug] Rendering template "mojo/menubar.html.ep"
+[Thu Jun  1 17:49:02 2017] [debug] 500 Internal Server Error (0.031468s, 31.778/s)
+[Thu Jun  1 17:58:18 2017] [info] Start application
+[Thu Jun  1 17:58:21 2017] [debug] POST "/user"
+[Thu Jun  1 17:58:21 2017] [debug] Routing to a callback
+[Thu Jun  1 17:58:21 2017] [error] Can't locate object method "classes" via package "Image uploaded from iOS.jpg" (perhaps you forgot to load "Image uploaded from iOS.jpg"?) at /home/yu/tap/chat/chat.pl line 111.
+
+[Thu Jun  1 17:58:21 2017] [debug] Template "exception.development.html.ep" not found
+[Thu Jun  1 17:58:21 2017] [debug] Template "exception.html.ep" not found
+[Thu Jun  1 17:58:21 2017] [debug] Rendering template "mojo/debug.html.ep"
+[Thu Jun  1 17:58:21 2017] [debug] Rendering template "mojo/menubar.html.ep"
+[Thu Jun  1 17:58:21 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 17:58:21 2017] [debug] 500 Internal Server Error (0.042561s, 23.496/s)
+[Thu Jun  1 18:22:34 2017] [info] Start application
+[Thu Jun  1 18:22:39 2017] [debug] GET "/"
+[Thu Jun  1 18:22:39 2017] [debug] Routing to a callback
+[Thu Jun  1 18:22:39 2017] [debug] Rendering template "index.html.ep" from DATA section
+[Thu Jun  1 18:22:39 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 18:22:39 2017] [debug] Rendering template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:22:39 2017] [debug] 200 OK (0.005258s, 190.186/s)
+[Thu Jun  1 18:22:46 2017] [debug] POST "/"
+[Thu Jun  1 18:22:46 2017] [debug] Routing to a callback
+[Thu Jun  1 18:22:46 2017] [debug] 302 Found (0.018272s, 54.729/s)
+[Thu Jun  1 18:22:46 2017] [debug] GET "/list"
+[Thu Jun  1 18:22:46 2017] [debug] Routing to a callback
+[Thu Jun  1 18:22:46 2017] [debug] Rendering template "list.html.ep" from DATA section
+[Thu Jun  1 18:22:46 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:22:46 2017] [debug] 200 OK (0.011519s, 86.813/s)
+[Thu Jun  1 18:22:50 2017] [debug] GET "/"
+[Thu Jun  1 18:22:50 2017] [debug] Routing to a callback
+[Thu Jun  1 18:22:50 2017] [debug] Rendering cached template "index.html.ep" from DATA section
+[Thu Jun  1 18:22:50 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:22:50 2017] [debug] 200 OK (0.002166s, 461.681/s)
+[Thu Jun  1 18:22:51 2017] [debug] GET "/user"
+[Thu Jun  1 18:22:51 2017] [debug] Routing to a callback
+[Thu Jun  1 18:22:51 2017] [debug] Rendering template "user.html.ep" from DATA section
+[Thu Jun  1 18:22:51 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:22:51 2017] [debug] 200 OK (0.010371s, 96.423/s)
+[Thu Jun  1 18:23:06 2017] [debug] POST "/user"
+[Thu Jun  1 18:23:06 2017] [debug] Routing to a callback
+[Thu Jun  1 18:23:06 2017] [debug] 302 Found (0.007092s, 141.004/s)
+[Thu Jun  1 18:23:06 2017] [debug] GET "/"
+[Thu Jun  1 18:23:06 2017] [debug] Routing to a callback
+[Thu Jun  1 18:23:06 2017] [debug] Rendering cached template "index.html.ep" from DATA section
+[Thu Jun  1 18:23:06 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:23:06 2017] [debug] 200 OK (0.001512s, 661.376/s)
+[Thu Jun  1 18:23:18 2017] [debug] POST "/"
+[Thu Jun  1 18:23:18 2017] [debug] Routing to a callback
+[Thu Jun  1 18:23:18 2017] [debug] 302 Found (0.005319s, 188.005/s)
+[Thu Jun  1 18:23:18 2017] [debug] GET "/list"
+[Thu Jun  1 18:23:18 2017] [debug] Routing to a callback
+[Thu Jun  1 18:23:18 2017] [debug] Rendering cached template "list.html.ep" from DATA section
+[Thu Jun  1 18:23:18 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:23:18 2017] [debug] 200 OK (0.0049s, 204.082/s)
+[Thu Jun  1 18:23:20 2017] [debug] GET "/"
+[Thu Jun  1 18:23:20 2017] [debug] Routing to a callback
+[Thu Jun  1 18:23:20 2017] [debug] Rendering cached template "index.html.ep" from DATA section
+[Thu Jun  1 18:23:20 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:23:20 2017] [debug] 200 OK (0.002132s, 469.043/s)
+[Thu Jun  1 18:24:21 2017] [debug] GET "/user"
+[Thu Jun  1 18:24:21 2017] [debug] Routing to a callback
+[Thu Jun  1 18:24:21 2017] [debug] Rendering cached template "user.html.ep" from DATA section
+[Thu Jun  1 18:24:21 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:24:21 2017] [debug] 200 OK (0.004429s, 225.785/s)
+[Thu Jun  1 18:24:36 2017] [debug] POST "/user"
+[Thu Jun  1 18:24:36 2017] [debug] Routing to a callback
+[Thu Jun  1 18:24:36 2017] [debug] 302 Found (0.007087s, 141.103/s)
+[Thu Jun  1 18:24:36 2017] [debug] GET "/"
+[Thu Jun  1 18:24:36 2017] [debug] Routing to a callback
+[Thu Jun  1 18:24:36 2017] [debug] Rendering cached template "index.html.ep" from DATA section
+[Thu Jun  1 18:24:36 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:24:36 2017] [debug] 200 OK (0.001529s, 654.022/s)
+[Thu Jun  1 18:24:41 2017] [info] Start application
+[Thu Jun  1 18:29:18 2017] [info] Start application
+[Thu Jun  1 18:29:19 2017] [debug] GET "/user"
+[Thu Jun  1 18:29:19 2017] [debug] Routing to a callback
+[Thu Jun  1 18:29:19 2017] [debug] Rendering template "user.html.ep" from DATA section
+[Thu Jun  1 18:29:19 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 18:29:19 2017] [debug] Rendering template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:29:19 2017] [debug] 200 OK (0.026629s, 37.553/s)
+[Thu Jun  1 18:29:21 2017] [debug] GET "/"
+[Thu Jun  1 18:29:21 2017] [debug] Routing to a callback
+[Thu Jun  1 18:29:21 2017] [debug] Rendering template "index.html.ep" from DATA section
+[Thu Jun  1 18:29:21 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:29:21 2017] [debug] 200 OK (0.004442s, 225.124/s)
+[Thu Jun  1 18:29:23 2017] [debug] GET "/user"
+[Thu Jun  1 18:29:23 2017] [debug] Routing to a callback
+[Thu Jun  1 18:29:23 2017] [debug] Rendering cached template "user.html.ep" from DATA section
+[Thu Jun  1 18:29:23 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:29:23 2017] [debug] 200 OK (0.004584s, 218.150/s)
+[Thu Jun  1 18:49:45 2017] [info] Start application
+[Thu Jun  1 18:49:45 2017] [debug] GET "/user"
+[Thu Jun  1 18:49:45 2017] [debug] Routing to a callback
+[Thu Jun  1 18:49:45 2017] [debug] Rendering template "user.html.ep" from DATA section
+[Thu Jun  1 18:49:45 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 18:49:45 2017] [debug] Rendering template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:49:45 2017] [debug] 200 OK (0.02009s, 49.776/s)
+[Thu Jun  1 18:49:45 2017] [debug] GET "/"
+[Thu Jun  1 18:49:45 2017] [debug] Routing to a callback
+[Thu Jun  1 18:49:45 2017] [debug] Rendering template "index.html.ep" from DATA section
+[Thu Jun  1 18:49:45 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:49:45 2017] [debug] 200 OK (0.002559s, 390.778/s)
+[Thu Jun  1 18:49:45 2017] [debug] GET "/"
+[Thu Jun  1 18:49:45 2017] [debug] Routing to a callback
+[Thu Jun  1 18:49:45 2017] [debug] Rendering cached template "index.html.ep" from DATA section
+[Thu Jun  1 18:49:45 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:49:45 2017] [debug] 200 OK (0.001439s, 694.927/s)
+[Thu Jun  1 18:49:45 2017] [debug] GET "/"
+[Thu Jun  1 18:49:45 2017] [debug] Routing to a callback
+[Thu Jun  1 18:49:45 2017] [debug] Rendering cached template "index.html.ep" from DATA section
+[Thu Jun  1 18:49:45 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:49:45 2017] [debug] 200 OK (0.001215s, 823.045/s)
+[Thu Jun  1 18:49:46 2017] [debug] GET "/user"
+[Thu Jun  1 18:49:46 2017] [debug] Routing to a callback
+[Thu Jun  1 18:49:46 2017] [debug] Rendering cached template "user.html.ep" from DATA section
+[Thu Jun  1 18:49:46 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:49:46 2017] [debug] 200 OK (0.004139s, 241.604/s)
+[Thu Jun  1 18:49:48 2017] [debug] GET "/"
+[Thu Jun  1 18:49:48 2017] [debug] Routing to a callback
+[Thu Jun  1 18:49:48 2017] [debug] Rendering cached template "index.html.ep" from DATA section
+[Thu Jun  1 18:49:48 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:49:48 2017] [debug] 200 OK (0.001673s, 597.729/s)
+[Thu Jun  1 18:49:50 2017] [debug] GET "/user"
+[Thu Jun  1 18:49:50 2017] [debug] Routing to a callback
+[Thu Jun  1 18:49:50 2017] [debug] Rendering cached template "user.html.ep" from DATA section
+[Thu Jun  1 18:49:50 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 18:49:50 2017] [debug] 200 OK (0.006663s, 150.083/s)
+[Thu Jun  1 19:10:21 2017] [info] Start application
+[Thu Jun  1 19:10:22 2017] [debug] GET "/user"
+[Thu Jun  1 19:10:22 2017] [debug] Routing to a callback
+[Thu Jun  1 19:10:22 2017] [debug] Rendering template "user.html.ep" from DATA section
+[Thu Jun  1 19:10:22 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 19:10:22 2017] [debug] Rendering template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 19:10:22 2017] [debug] 200 OK (0.023968s, 41.722/s)
+[Thu Jun  1 19:19:36 2017] [info] Start application
+[Thu Jun  1 19:19:36 2017] [debug] GET "/user"
+[Thu Jun  1 19:19:36 2017] [debug] Routing to a callback
+[Thu Jun  1 19:19:36 2017] [debug] Rendering template "user.html.ep" from DATA section
+[Thu Jun  1 19:19:36 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 19:19:36 2017] [debug] Rendering template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 19:19:36 2017] [debug] 200 OK (0.018971s, 52.712/s)
+[Thu Jun  1 19:19:36 2017] [debug] GET "/user"
+[Thu Jun  1 19:19:36 2017] [debug] Routing to a callback
+[Thu Jun  1 19:19:36 2017] [debug] Rendering cached template "user.html.ep" from DATA section
+[Thu Jun  1 19:19:36 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 19:19:36 2017] [debug] 200 OK (0.006126s, 163.239/s)
+[Thu Jun  1 19:19:36 2017] [debug] GET "/user"
+[Thu Jun  1 19:19:36 2017] [debug] Routing to a callback
+[Thu Jun  1 19:19:36 2017] [debug] Rendering cached template "user.html.ep" from DATA section
+[Thu Jun  1 19:19:36 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 19:19:36 2017] [debug] 200 OK (0.006192s, 161.499/s)
+[Thu Jun  1 19:19:40 2017] [debug] GET "/user"
+[Thu Jun  1 19:19:40 2017] [debug] Routing to a callback
+[Thu Jun  1 19:19:40 2017] [debug] Rendering cached template "user.html.ep" from DATA section
+[Thu Jun  1 19:19:40 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 19:19:40 2017] [debug] 200 OK (0.006481s, 154.297/s)
+[Thu Jun  1 19:24:20 2017] [info] Start application
+[Thu Jun  1 19:24:35 2017] [info] Start application
+[Thu Jun  1 19:24:38 2017] [debug] GET "/user"
+[Thu Jun  1 19:24:38 2017] [debug] Routing to a callback
+[Thu Jun  1 19:24:38 2017] [debug] Rendering template "user.html.ep" from DATA section
+[Thu Jun  1 19:24:38 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 19:24:38 2017] [debug] Rendering template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 19:24:38 2017] [debug] 200 OK (0.021779s, 45.916/s)
+[Thu Jun  1 19:24:43 2017] [debug] GET "/"
+[Thu Jun  1 19:24:43 2017] [debug] Routing to a callback
+[Thu Jun  1 19:24:43 2017] [error] Can't call method "static" on an undefined value at /home/yu/tap/chat/chat.pl line 42.
+
+[Thu Jun  1 19:24:43 2017] [debug] Template "exception.development.html.ep" not found
+[Thu Jun  1 19:24:43 2017] [debug] Template "exception.html.ep" not found
+[Thu Jun  1 19:24:43 2017] [debug] Rendering template "mojo/debug.html.ep"
+[Thu Jun  1 19:24:43 2017] [debug] Rendering template "mojo/menubar.html.ep"
+[Thu Jun  1 19:24:43 2017] [debug] 500 Internal Server Error (0.030338s, 32.962/s)
+[Thu Jun  1 19:25:43 2017] [info] Start application
+[Thu Jun  1 19:25:44 2017] [debug] GET "/"
+[Thu Jun  1 19:25:44 2017] [debug] Routing to a callback
+[Thu Jun  1 19:25:44 2017] [error] Can't call method "static" on an undefined value at /home/yu/tap/chat/chat.pl line 42.
+
+[Thu Jun  1 19:25:44 2017] [debug] Template "exception.development.html.ep" not found
+[Thu Jun  1 19:25:44 2017] [debug] Template "exception.html.ep" not found
+[Thu Jun  1 19:25:44 2017] [debug] Rendering template "mojo/debug.html.ep"
+[Thu Jun  1 19:25:44 2017] [debug] Rendering template "mojo/menubar.html.ep"
+[Thu Jun  1 19:25:44 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 19:25:44 2017] [debug] 500 Internal Server Error (0.024288s, 41.173/s)
+[Thu Jun  1 19:31:14 2017] [info] Start application
+[Thu Jun  1 19:31:26 2017] [debug] GET "/"
+[Thu Jun  1 19:31:26 2017] [debug] Routing to a callback
+[Thu Jun  1 19:31:26 2017] [error] Can't locate object method "" via package "Mojolicious::Static" at /home/yu/tap/chat/chat.pl line 42.
+
+[Thu Jun  1 19:31:26 2017] [debug] Template "exception.development.html.ep" not found
+[Thu Jun  1 19:31:26 2017] [debug] Template "exception.html.ep" not found
+[Thu Jun  1 19:31:26 2017] [debug] Rendering template "mojo/debug.html.ep"
+[Thu Jun  1 19:31:26 2017] [debug] Rendering template "mojo/menubar.html.ep"
+[Thu Jun  1 19:31:26 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 19:31:26 2017] [debug] 500 Internal Server Error (0.041602s, 24.037/s)
+[Thu Jun  1 19:32:24 2017] [info] Start application
+[Thu Jun  1 19:32:24 2017] [debug] GET "/"
+[Thu Jun  1 19:32:24 2017] [debug] Routing to a callback
+[Thu Jun  1 19:32:24 2017] [error] Can't locate object method "static" via package "Mojolicious::Controller" at /home/yu/tap/chat/chat.pl line 44.
+
+[Thu Jun  1 19:32:24 2017] [debug] Template "exception.development.html.ep" not found
+[Thu Jun  1 19:32:24 2017] [debug] Template "exception.html.ep" not found
+[Thu Jun  1 19:32:24 2017] [debug] Rendering template "mojo/debug.html.ep"
+[Thu Jun  1 19:32:24 2017] [debug] Rendering template "mojo/menubar.html.ep"
+[Thu Jun  1 19:32:24 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 19:32:24 2017] [debug] 500 Internal Server Error (0.020596s, 48.553/s)
+[Thu Jun  1 19:33:03 2017] [info] Start application
+[Thu Jun  1 19:33:03 2017] [debug] GET "/"
+[Thu Jun  1 19:33:03 2017] [debug] Routing to a callback
+[Thu Jun  1 19:33:03 2017] [error] Can't call method "static" on an undefined value at /home/yu/tap/chat/chat.pl line 42.
+
+[Thu Jun  1 19:33:03 2017] [debug] Template "exception.development.html.ep" not found
+[Thu Jun  1 19:33:03 2017] [debug] Template "exception.html.ep" not found
+[Thu Jun  1 19:33:03 2017] [debug] Rendering template "mojo/debug.html.ep"
+[Thu Jun  1 19:33:03 2017] [debug] Rendering template "mojo/menubar.html.ep"
+[Thu Jun  1 19:33:03 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 19:33:03 2017] [debug] 500 Internal Server Error (0.07106s, 14.073/s)
+[Thu Jun  1 19:33:05 2017] [debug] GET "/"
+[Thu Jun  1 19:33:05 2017] [debug] Routing to a callback
+[Thu Jun  1 19:33:05 2017] [error] Can't call method "static" on an undefined value at /home/yu/tap/chat/chat.pl line 42.
+
+[Thu Jun  1 19:33:05 2017] [debug] Template "exception.development.html.ep" not found
+[Thu Jun  1 19:33:05 2017] [debug] Template "exception.html.ep" not found
+[Thu Jun  1 19:33:05 2017] [debug] Rendering cached template "mojo/debug.html.ep"
+[Thu Jun  1 19:33:05 2017] [debug] Rendering cached template "mojo/menubar.html.ep"
+[Thu Jun  1 19:33:05 2017] [debug] 500 Internal Server Error (0.007656s, 130.617/s)
+[Thu Jun  1 19:36:35 2017] [info] Start application
+[Thu Jun  1 19:36:35 2017] [debug] GET "/"
+[Thu Jun  1 19:36:35 2017] [debug] Routing to a callback
+[Thu Jun  1 19:36:35 2017] [error] Can't call method "static" on an undefined value at /home/yu/tap/chat/chat.pl line 43.
+
+[Thu Jun  1 19:36:35 2017] [debug] Template "exception.development.html.ep" not found
+[Thu Jun  1 19:36:35 2017] [debug] Template "exception.html.ep" not found
+[Thu Jun  1 19:36:35 2017] [debug] Rendering template "mojo/debug.html.ep"
+[Thu Jun  1 19:36:35 2017] [debug] Rendering template "mojo/menubar.html.ep"
+[Thu Jun  1 19:36:35 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 19:36:35 2017] [debug] 500 Internal Server Error (0.023708s, 42.180/s)
+[Thu Jun  1 19:36:50 2017] [info] Start application
+[Thu Jun  1 19:36:51 2017] [debug] GET "/"
+[Thu Jun  1 19:36:51 2017] [debug] Routing to a callback
+[Thu Jun  1 19:36:51 2017] [error] Can't call method "static" on an undefined value at /home/yu/tap/chat/chat.pl line 42.
+
+[Thu Jun  1 19:36:51 2017] [debug] Template "exception.development.html.ep" not found
+[Thu Jun  1 19:36:51 2017] [debug] Template "exception.html.ep" not found
+[Thu Jun  1 19:36:51 2017] [debug] Rendering template "mojo/debug.html.ep"
+[Thu Jun  1 19:36:51 2017] [debug] Rendering template "mojo/menubar.html.ep"
+[Thu Jun  1 19:36:51 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 19:36:51 2017] [debug] 500 Internal Server Error (0.027112s, 36.884/s)
+[Thu Jun  1 19:41:02 2017] [info] Start application
+[Thu Jun  1 19:41:03 2017] [debug] GET "/"
+[Thu Jun  1 19:41:03 2017] [debug] Routing to a callback
+[Thu Jun  1 19:41:03 2017] [debug] Rendering template "index.html.ep" from DATA section
+[Thu Jun  1 19:41:03 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 19:41:03 2017] [debug] Rendering template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 19:41:03 2017] [debug] 200 OK (0.004502s, 222.124/s)
+[Thu Jun  1 19:41:25 2017] [info] Start application
+[Thu Jun  1 19:46:03 2017] [info] Start application
+[Thu Jun  1 19:46:03 2017] [debug] GET "/"
+[Thu Jun  1 19:46:03 2017] [debug] Routing to a callback
+[Thu Jun  1 19:46:03 2017] [debug] Rendering template "index.html.ep" from DATA section
+[Thu Jun  1 19:46:03 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 19:46:03 2017] [debug] Rendering template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 19:46:03 2017] [debug] 200 OK (0.00428s, 233.645/s)
+[Thu Jun  1 19:46:08 2017] [debug] POST "/"
+[Thu Jun  1 19:46:08 2017] [debug] Routing to a callback
+[Thu Jun  1 19:46:08 2017] [debug] 302 Found (0.01824s, 54.825/s)
+[Thu Jun  1 19:46:08 2017] [debug] GET "/list"
+[Thu Jun  1 19:46:08 2017] [debug] Routing to a callback
+[Thu Jun  1 19:46:08 2017] [debug] Rendering template "list.html.ep" from DATA section
+[Thu Jun  1 19:46:08 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 19:46:08 2017] [debug] 200 OK (0.011812s, 84.660/s)
+[Thu Jun  1 19:46:09 2017] [debug] GET "/first_room"
+[Thu Jun  1 19:46:09 2017] [debug] Routing to a callback
+[Thu Jun  1 19:46:09 2017] [debug] Rendering template "chat.html.ep" from DATA section
+[Thu Jun  1 19:46:09 2017] [debug] Rendering cached template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 19:46:09 2017] [debug] 200 OK (0.011169s, 89.534/s)
+[Thu Jun  1 19:46:09 2017] [debug] GET "/public/image/gh4wG3um.png"
+[Thu Jun  1 19:46:09 2017] [debug] Template "not_found.development.html.ep" not found
+[Thu Jun  1 19:46:09 2017] [debug] Template "not_found.html.ep" not found
+[Thu Jun  1 19:46:09 2017] [debug] Rendering template "mojo/debug.html.ep"
+[Thu Jun  1 19:46:09 2017] [debug] Rendering template "mojo/menubar.html.ep"
+[Thu Jun  1 19:46:10 2017] [debug] 404 Not Found (0.034098s, 29.327/s)
+[Thu Jun  1 19:46:32 2017] [info] Start application
+[Thu Jun  1 19:47:39 2017] [info] Start application
+[Thu Jun  1 19:47:39 2017] [debug] GET "/first_room"
+[Thu Jun  1 19:47:39 2017] [debug] Routing to a callback
+[Thu Jun  1 19:47:39 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 19:47:39 2017] [debug] Rendering template "chat.html.ep" from DATA section
+[Thu Jun  1 19:47:39 2017] [debug] Rendering template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 19:47:39 2017] [debug] 200 OK (0.055525s, 18.010/s)
+[Thu Jun  1 19:47:59 2017] [info] Start application
+[Thu Jun  1 19:47:59 2017] [debug] GET "/first_room"
+[Thu Jun  1 19:47:59 2017] [debug] Routing to a callback
+[Thu Jun  1 19:47:59 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 19:47:59 2017] [debug] Rendering template "chat.html.ep" from DATA section
+[Thu Jun  1 19:47:59 2017] [debug] Rendering template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 19:47:59 2017] [debug] 200 OK (0.083457s, 11.982/s)
+[Thu Jun  1 19:48:25 2017] [info] Start application
+[Thu Jun  1 19:48:25 2017] [debug] GET "/first_room"
+[Thu Jun  1 19:48:25 2017] [debug] Routing to a callback
+[Thu Jun  1 19:48:25 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 19:48:25 2017] [debug] Rendering template "chat.html.ep" from DATA section
+[Thu Jun  1 19:48:25 2017] [debug] Rendering template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 19:48:25 2017] [debug] 200 OK (0.050492s, 19.805/s)
+[Thu Jun  1 19:53:08 2017] [info] Start application
+[Thu Jun  1 19:53:10 2017] [debug] GET "/first_room"
+[Thu Jun  1 19:53:10 2017] [debug] Routing to a callback
+[Thu Jun  1 19:53:10 2017] [debug] Your secret passphrase needs to be changed
+[Thu Jun  1 19:53:10 2017] [debug] Rendering template "chat.html.ep" from DATA section
+[Thu Jun  1 19:53:10 2017] [debug] Rendering template "layouts/default.html.ep" from DATA section
+[Thu Jun  1 19:53:10 2017] [debug] 200 OK (0.031441s, 31.806/s)
+[Thu Jun  1 19:53:15 2017] [info] Start application
