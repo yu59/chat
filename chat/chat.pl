@@ -3,9 +3,14 @@ use Mojolicious::Lite;
 use Mojo::Util qw/md5_sum/;
 use Data::Dumper;
 use DBI;
-#use File::Basename 'basename';
-#use File::Path 'mkpath';
-use Mojo::Upload;
+# use File::Basename 'basename';
+# use File::Path 'mkpath';
+# use Mojo::Upload;
+use Mojolicious::Static;
+use Mojo::Base 'Mojolicious';
+
+## rog への書き込み
+app->log->info('Start application');
 
 ## 画像を保存するディレクトリがなければ作る
 my $image_base = '/image';
@@ -13,9 +18,14 @@ my $image_dir = app->home->rel_file('/public') . $image_base;
 unless (-d $image_dir) {
   mkpath $image_dir or die "cannot create dirctory: $image_dir";
 }
-my $path = '/home/image';
+my $path = '/home/yu/image';
 mkdir $path;
-chmod 0777, $path;
+chmod 0755, $path;
+
+## uploadするディレクトリを指定
+# has upload_dir => sub {shift->home/yu . '/image'};
+# has data_dir => sub {shift->home/yu . '/image'};
+
 
 
 
@@ -28,7 +38,15 @@ plugin 'PODRenderer';
 ## login page
 get '/' => sub { 
   my $c = shift;
-  
+#  my $app = shift;
+#  my $static = $app->static;
+#  $app = $c->static(Mojolicious::Static->new);
+
+#  push @{$app->static->paths}, '/home/yu/tap/chat/public';
+#  push @{$app->static->classes}, 'Mojolicious::Plugin::Fun';
+#  print Dumper $app;
+#  $c->stash(app => \$app);
+
   $c->render('index');
 };
 
@@ -76,6 +94,18 @@ post '/user' => sub {
   my $dbh = DBI->connect('dbi:Pg:dbname=chat',"yu","pass"); 
   my $name = $c->param('name');
   my $icon = $c->param('icon');
+  
+  ## 画像をpushするために宣言
+  my $static = Mojolicious::Static->new;
+#  my $classes = $static->classes;
+#  $static = $static->classes(['main']);
+#  push @{$static->classes}, 'MyApp::Controller::Foo';
+#  push @{$static->paths}, '/home/yu/tap/chat/public';
+
+#  my $paths = $static->paths;
+#  $static = $static->paths(['/home/yu/tap/chat/public']);
+#  push @{$static->paths}, '/home/yu/tap/chat/public';
+   
 
   ## 入力したpassをハッシュ化する
   my $pass = md5_sum $c->param('pass');
@@ -98,11 +128,10 @@ post '/user' => sub {
 #  push @{$c->static->paths}, $c->upload_dir;
 #  my $r = $c->routes;
 
-# https://github.com/yuki-kimoto/mojolicious-guides-japanese/wiki/Mojo::Upload
+## 参照 https://github.com/yuki-kimoto/mojolicious-guides-japanese/wiki/Mojo::Upload
 #  my $upload = Mojo::Upload->new;
 #  print Dumper $upload->filename;
 #  $upload->move_to("/home/sri/");
-
   
   $c->redirect_to('/');
   
@@ -239,6 +268,12 @@ __DATA__
 <Hr>
 % end
 <%= link_to 'create new user' => '/user' %> 
+
+%#% for my $app (@{$app}) {
+%#  <a href="/<%= $app->{room}%>"><%= $app->{room} %> 
+%#  <br>
+%#% }
+
 </center>
 
 %#-----------------------------------------------------------------------
@@ -325,9 +360,10 @@ __DATA__
   % if ($msgs->{name} eq $user){
     <p align = "right">
       <br style="Line-Height:3pt">
-      <font size="2">
+      <font size="4">
       <%= $msgs->{name} %>
-      <%= $icon %>
+      <img border="0" src="./image/gh4wG3um.png" width="50" height="50" alt="イラスト1">
+      %# <%= $icon %>
     </p>
       <br style="Line-Height:3pt">
         <div style="border:1px solid #0CF;padding:10px;border-radius:10px;" >
