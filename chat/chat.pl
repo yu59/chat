@@ -5,7 +5,7 @@ use Data::Dumper;
 use DBI;
 # use File::Basename 'basename';
 # use File::Path 'mkpath';
-# use Mojo::Upload;
+use Mojo::Upload;
 use Mojolicious::Static;
 use Mojo::Base 'Mojolicious';
 
@@ -22,12 +22,6 @@ my $path = '/home/yu/image';
 mkdir $path;
 chmod 0755, $path;
 
-## uploadするディレクトリを指定
-# has upload_dir => sub {shift->home/yu . '/image'};
-# has data_dir => sub {shift->home/yu . '/image'};
-
-
-
 
 # Documentation browser under "/perldoc"
 plugin 'PODRenderer';
@@ -42,7 +36,7 @@ get '/' => sub {
 #  my $static = $app->static;
 #  $app = $c->static(Mojolicious::Static->new);
 
-#  push @{$app->static->paths}, '/home/yu/tap/chat/public';
+#  push @{$app->static->paths}, '/home/yu/tap/chat/public/';
 #  push @{$app->static->classes}, 'Mojolicious::Plugin::Fun';
 #  print Dumper $app;
 #  $c->stash(app => \$app);
@@ -69,7 +63,7 @@ post '/' => sub {
 
   ## データの保存
   $c->session($href);
-
+  print Dumper $href;
   # KEY が存在するなら /list へ遷移する
   if (exists($href->{id})){  
   $c->redirect_to('/list');
@@ -93,8 +87,8 @@ post '/user' => sub {
   my $c = shift;
   my $dbh = DBI->connect('dbi:Pg:dbname=chat',"yu","pass"); 
   my $name = $c->param('name');
-  my $icon = $c->param('icon');
-  
+  my $icon = $c->req->upload('icon');
+  print Dumper $icon;  
   ## 画像をpushするために宣言
   my $static = Mojolicious::Static->new;
 #  my $classes = $static->classes;
@@ -117,22 +111,12 @@ post '/user' => sub {
     values(?, ?, ?, now())
   "
   );
-  $sth->execute($name, $pass, $icon);
+  $sth->execute($name, $pass, $icon->filename);
   
-#  my $filename = $c->tx->req->upload('icon')->filename;
-#  $c->tx->req->upload('icon')->move_to($path. $filename);
 
-#  my $image file_get_contents($icon);
-#  file_put_contents($path,$image); 
-
-#  push @{$c->static->paths}, $c->upload_dir;
-#  my $r = $c->routes;
-
-## 参照 https://github.com/yuki-kimoto/mojolicious-guides-japanese/wiki/Mojo::Upload
-#  my $upload = Mojo::Upload->new;
-#  print Dumper $upload->filename;
-#  $upload->move_to("/home/sri/");
-  
+  $icon->move_to('/home/yu/tap/chat/public/icon/' . $icon->filename);
+  print Dumper $icon;
+ 
   $c->redirect_to('/');
   
 };
@@ -196,7 +180,7 @@ get '/:room' => sub {
   ## 保存したデータを取り出す
   my $user = $c->session('name');
   my $icon = $c->session('icon');
- 
+  print Dumper $icon;
   ## Take out massage for database
   my $sth = $dbh->prepare("select * from msg ");
 
@@ -228,17 +212,20 @@ post '/:room' => sub {
   my $msg = $c->param('msg');
   my @msg;
   my $room = $c->param('room');
+  my $img = $c->param('img');
  
   ## massageが入力されてない時にinsertを行わないようにする
   if ($msg ne '' ){
   my $sth = $dbh->prepare(
   "
-  insert into msg (name, msg, create_timestamp) values(?, ?, now());
+    insert into msg (name, msg, create_timestamp,img) values(?, ?, now(), ?);
   "
   );
 
-  $sth->execute($user, $msg);
+  $sth->execute($user, $msg, $img->filename );
   }else{};
+
+  $img->move_to('/home/yu/tap/chat/public/image/' . $img->filename);
 
   $c->redirect_to("/$room");
 };
@@ -285,7 +272,8 @@ __DATA__
 <h1><center>Create user page</center></h1>
 <p align = "right"><%= link_to 'return' => '/' %></p>
 <Hr>
-%= form_for "/user" => method => 'POST' => begin
+%= form_for "/user" => enctype => "multipart/form-data" => method => 'POST' => begin
+  
   <center>
   %= 'icon:'
   %= file_field 'icon'
@@ -342,8 +330,11 @@ __DATA__
 
 <p align = "right"><%= link_to 'return' => '/list' %></p>
 
-%= form_for "/$room" => method => 'POST' => begin
+%= form_for "/$room" => enctype => "multipart/form-data" => method => 'POST' => begin
   <center>
+    %= 'image:'
+    %= file_field 'img'
+    <br>
     %= 'msg:'
     %= text_field 'msg'
     %= submit_button 'done'
@@ -361,18 +352,19 @@ __DATA__
     <p align = "right">
       <br style="Line-Height:3pt">
       <font size="4">
-      <%= $msgs->{name} %>
-      <img border="0" src="./image/gh4wG3um.png" width="50" height="50" alt="イラスト1">
-      %# <%= $icon %>
+        <%= $msgs->{name} %>
+      <img border="0" src="./icon/<%= $icon %>" width="50" height="50" alt="<%= $icon %>">
     </p>
       <br style="Line-Height:3pt">
         <div style="border:1px solid #0CF;padding:10px;border-radius:10px;" >
           <font size="5">
-          <p align = "right"><%= $msgs->{msg} %></p>
+          <p align = "right"><img border="0" src="./image/<%= $msgs->{img} %>"<%= $msgs->{msg} %></p>
         </div>
   % }else{
-    <br style="Line-Height:3pt"><font size="2"><%= $msgs->{name} %>
-    <br style="Line-Height:3pt"><div style="border:1px solid #0CF;padding:10px;border-radius:10px;" ><font size="5"><%= $msgs->{msg} %></div>
+      <br style="Line-Height:4pt">
+      <font size="2">
+        <%= $msgs->{name} %>
+      <br style="Line-Height:3pt"><div style="border:1px solid #0CF;padding:10px;border-radius:10px;" ><font size="5"><%= $msgs->{msg} %><img border="0" src="./image/<%= $msgs->{img} %>"</p></div>
   % }
 % }
 <div id="smoothplay"></div>
