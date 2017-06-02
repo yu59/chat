@@ -91,15 +91,6 @@ post '/user' => sub {
   print Dumper $icon;  
   ## 画像をpushするために宣言
   my $static = Mojolicious::Static->new;
-#  my $classes = $static->classes;
-#  $static = $static->classes(['main']);
-#  push @{$static->classes}, 'MyApp::Controller::Foo';
-#  push @{$static->paths}, '/home/yu/tap/chat/public';
-
-#  my $paths = $static->paths;
-#  $static = $static->paths(['/home/yu/tap/chat/public']);
-#  push @{$static->paths}, '/home/yu/tap/chat/public';
-   
 
   ## 入力したpassをハッシュ化する
   my $pass = md5_sum $c->param('pass');
@@ -215,7 +206,7 @@ post '/:room' => sub {
   my $img = $c->param('img');
  
   ## massageが入力されてない時にinsertを行わないようにする
-  if ($msg ne '' ){
+  if ($msg ne '' || $img->filename ne ''){
   my $sth = $dbh->prepare(
   "
     insert into msg (name, msg, create_timestamp,img) values(?, ?, now(), ?);
@@ -223,10 +214,10 @@ post '/:room' => sub {
   );
 
   $sth->execute($user, $msg, $img->filename );
-  }else{};
-
-  $img->move_to('/home/yu/tap/chat/public/image/' . $img->filename);
-
+  }
+  if ($img->filename ne ''){
+   $img->move_to('/home/yu/tap/chat/public/image/' . $img->filename);
+  }
   $c->redirect_to("/$room");
 };
 
@@ -358,13 +349,23 @@ __DATA__
       <br style="Line-Height:3pt">
         <div style="border:1px solid #0CF;padding:10px;border-radius:10px;" >
           <font size="5">
-          <p align = "right"><img border="0" src="./image/<%= $msgs->{img} %>"<%= $msgs->{msg} %></p>
+          <p align = "right">
+            <%= $msgs->{msg} %>
+            % if ($msgs->{img} ne ''){  
+              <img border="0" src="./image/<%= $msgs->{img} %>"</p>
+            % }
         </div>
   % }else{
       <br style="Line-Height:4pt">
       <font size="2">
         <%= $msgs->{name} %>
-      <br style="Line-Height:3pt"><div style="border:1px solid #0CF;padding:10px;border-radius:10px;" ><font size="5"><%= $msgs->{msg} %><img border="0" src="./image/<%= $msgs->{img} %>"</p></div>
+      <img border="0" src="./icon/<%= $icon %>" width="50" height="50" alt="<%= $icon %>">
+      <br style="Line-Height:3pt"><div style="border:1px solid #0CF;padding:10px;border-radius:10px;" ><font size="5">
+        <%= $msgs->{msg} %>
+        % if ($msgs->{img} ne ''){
+          <img border="0" src="./image/<%= $msgs->{img} %>"
+        % }
+      </p></div>
   % }
 % }
 <div id="smoothplay"></div>
