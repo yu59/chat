@@ -8,6 +8,7 @@ use DBI;
 use Mojo::Upload;
 use Mojolicious::Static;
 use Mojo::Base 'Mojolicious';
+use File::Basename 'fileparse';
 
 ## rog への書き込み
 app->log->info('Start application');
@@ -89,12 +90,21 @@ post '/user' => sub {
   my $name = $c->param('name');
   my $icon = $c->req->upload('icon');
   print Dumper $icon;  
-  ## 画像をpushするために宣言
-  my $static = Mojolicious::Static->new;
 
   ## 入力したpassをハッシュ化する
   my $pass = md5_sum $c->param('pass');
   
+  
+  ## userIDを取得
+#  my $sth = $dbh->prepare("select max(id) from users");
+#  $sth->execute;
+#  my $id = $sth->fetchrow_hashref; 
+#  print Dumper $id;
+
+  ## icon のファイル名をIDに変更
+   
+
+
   ## users の table に新しいuserを追加
   my $sth = $dbh->prepare(
   "
@@ -103,7 +113,8 @@ post '/user' => sub {
   "
   );
   $sth->execute($name, $pass, $icon->filename);
-  
+
+    
 
   $icon->move_to('/home/yu/tap/chat/public/icon/' . $icon->filename);
   print Dumper $icon;
